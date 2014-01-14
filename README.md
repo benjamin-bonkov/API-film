@@ -1,22 +1,21 @@
 # API Documention
 
 # Endpoints
-```
-GET /v1/dogs
-```
 
-```
-POST /v1/dogs
-```
+GET /v1/films/@id
+	return movie whose id is @id
 
-```
-GET /v1/dogs/@id
-```
+GET /v1/films
+	return all the movie
 
-```
-PUT /v1/dogs/@id
-```
+GET /v1/films/search?field=value&field1=value1
+	return films whose field's value is value
 
-```
-DELETE /v1/dogs/@id
-```
+POST /v1/films
+	create film
+
+PUT /v1/films/@id
+	update movie whose id is @id
+
+DELETE /v1/films/@id = FilmsController->actionDelete
+	delete movie whose id is @id

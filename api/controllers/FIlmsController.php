@@ -2,6 +2,7 @@
 
 class FilmsController{
 	public $db;
+
 	public function __construct(){
 		$this->db=new DB\SQL(
 		    'mysql:host=localhost;port=3306;dbname=API-film',
@@ -10,12 +11,12 @@ class FilmsController{
 		);
 	}
 
+	public function actionFindOne(){
+		Api::response(200, $this->db->exec('SELECT * FROM `film` WHERE `idFilm`="'.F3::get('PARAMS.id').'"'));
+	}
+	
 	public function actionFindAll(){
 		Api::response(200, $this->db->exec('SELECT * FROM `film`'));
-	}
-
-	public function actionFind(){
-		Api::response(200, $this->db->exec('SELECT * FROM `film` WHERE `idFilm`="'.F3::get('PARAMS.id').'"'));
 	}
 
 	public function actionSearch(){
@@ -25,7 +26,7 @@ class FilmsController{
 			if($req != ''){
 				$req .= ' && ';
 			}
-			$req .= '`'.$key.'`="'.$value.'"';
+			$req .= '`'.$key.'`="'.urldecode($value).'"';
 		}
 		if(isset(F3::get('GET')['genre'])){
 			$join = "`film` as f
@@ -36,18 +37,7 @@ class FilmsController{
 		}
 		Api::response(200, $this->db->exec('SELECT * FROM '.$join.' WHERE '.$req.';'));
 	}
-
-	public function actionFindByGenre(){
-		Api::response(200, $this->db->exec(
-			'SELECT * FROM `film` as f
-		 	LEFT JOIN `film_genre` as fg 
-		 	ON f.`idFilm` = fg.`idFilm`
-		 	LEFT JOIN `genre` as g 
-		 	ON fg.`idGenre`=g.`idGenre`
-		 	WHERE `genre`="'.F3::get('PARAMS.genre').'"'
-		));
-	}
-
+//TODO ajout genres
 	public function actionCreate(){
 		if(isset(F3::get('POST')['nomFilm'])){
 			$values = '';
