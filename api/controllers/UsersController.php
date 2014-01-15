@@ -37,25 +37,26 @@ class UsersController{
 	}
 
 	public function actionCreate(){
-		if(isset(F3::get('POST')['pseudoUser'])){
+		var_dump(F3::get('GET'));
+		// die();
+		if(isset(F3::get('GET')['pseudoUser'])){
 			$values = '';
 			$req = '';
-			foreach(F3::get('POST') as $key => $value){
+			foreach(F3::get('GET') as $key => $value){
 				if($values != ''){
 					$values .= ' , ';
 					$req .= ' , ';
 				}
 				if($key=="mdpUser"){
-					$values = md5($values);
+					$values .= '"'.md5($values).'"';
 				}
 				$req .= '`'.$key.'`';
 				$values .= '"'.$value.'"';
 			}
-			$req .= '`token`';
+			$req .= ' , `token`';
 			//TODO generatetoken
-			$values .= md5(F3::get('POST')['pseudoUser']);
-			die('INSERT INTO `film` ('.$req.') VALUES('.$values.');');
-			$data = array('création de '.$_POST["pseudoUser"].'');
+			$values .= ' , "'.md5(F3::get('GET')['pseudoUser']).'"';
+			$data = array('creation de '.F3::get('GET')["pseudoUser"].'');
 			$this->db->exec('INSERT INTO `utilisateur` ('.$req.') VALUES('.$values.');');
 			Api::response(200, $data);
 		}
@@ -65,12 +66,21 @@ class UsersController{
 	}
 
 	public function actionUpdate(){
-		$data = array('Update dog with name: ' . F3::get('PARAMS.id'));
+		$put = Put::get();$req = '';
+		foreach($put as $key => $value){
+			if($req != ''){
+				$req .= ' , ';
+			}
+			$req .= '`'.$key.'`="'.$value.'"';
+		}
+		$data = array('Update user with id : ' . F3::get('PARAMS.id'));
+		$this->db->exec('UPDATE  `utilisateur` SET  '.$req.' WHERE  `utilisateur`.`idUser`="'.F3::get('PARAMS.id').'";');
 		Api::response(200, $data);
 	}
 
 	public function actionDelete(){
-		$data = array('Delete dog with name: ' . F3::get('PARAMS.id'));
+		$data = array('Delete user with id: ' . F3::get('PARAMS.id'));
+		$this->db->exec('DELETE FROM `utilisateur` WHERE `utilisateur`.`idUser` ='.F3::get('PARAMS.id').';');
 		Api::response(200, $data);
 	}
 }

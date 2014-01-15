@@ -61,8 +61,9 @@ class FilmsController{
 
 
 	public function actionUpdate(){
+		$put = Put::get();
 		$req = '';
-		foreach(F3::get('GET') as $key => $value){
+		foreach($put as $key => $value){
 			if($req != ''){
 				$req .= ' , ';
 			}
@@ -74,7 +75,7 @@ class FilmsController{
 	}
 
 	public function actionDelete(){
-		$data = array('Delete film with name: ' . F3::get('PARAMS.id'));
+		$data = array('Delete film with id : ' . F3::get('PARAMS.id'));
 		$this->db->exec('DELETE FROM `film` WHERE `film`.`idFilm` ='.F3::get('PARAMS.id').';');
 		Api::response(200, $data);
 	}
