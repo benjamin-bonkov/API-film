@@ -11,11 +11,16 @@ class UsersController{
 		);
 	}
 
-	public function actionAuth(){
-		$user = new \DB\SQL\Mapper($this->db, 'utilisateur');
-		$auth = new \Auth($user, array('id'=>'idUser', 'pw'=>'mdpUser'));
-		$auth->basic(); // a network login prompt will display to authenticate the user
-	}
+	// public function actionAuth(){
+	// 	$user = new \DB\SQL\Mapper($this->db, 'utilisateur');
+	// 	$auth = new \Auth($user, array('id'=>'pseudoUser', 'pw'=>'mdpUser'));
+	// 	$auth->basic(); // a network login prompt will display to authenticate the user
+	// 	if ($auth) {
+	// 		echo 'error';
+	// 	} else {
+	// 		echo 'gud';
+	// 	}
+	// }
 
 	public function actionFindOne(){
 		Api::response(200, $this->db->exec('SELECT * FROM `utilisateur` WHERE `idUser`="'.F3::get('PARAMS.id').'"'));
@@ -37,9 +42,11 @@ class UsersController{
 	}
 
 	public function actionCreate(){
-		var_dump(F3::get('GET'));
-		// die();
 		if(isset(F3::get('GET')['pseudoUser'])){
+			if(count($this->db->exec('SELECT * FROM `utilisateur` WHERE `pseudoUser`="'.F3::get('GET')['pseudoUser'].'"'))>0){
+				Api::response(400, array('error'=>'Name is already taken'));
+				return;
+			}
 			$values = '';
 			$req = '';
 			foreach(F3::get('GET') as $key => $value){
@@ -55,7 +62,7 @@ class UsersController{
 			}
 			$req .= ' , `token`';
 			//TODO generatetoken
-			$values .= ' , "'.md5(F3::get('GET')['pseudoUser']).'"';
+			$values .= ' , "'.uniqid(rand(), true).'"';
 			$data = array('creation de '.F3::get('GET')["pseudoUser"].'');
 			$this->db->exec('INSERT INTO `utilisateur` ('.$req.') VALUES('.$values.');');
 			Api::response(200, $data);

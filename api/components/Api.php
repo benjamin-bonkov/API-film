@@ -21,6 +21,15 @@ class Api{
 		print json_encode($response);
 	}
 
+	public static function verifToken($token){
+		$db=new DB\SQL(
+		    'mysql:host=localhost;port=3306;dbname=API-film',
+		    'root',
+		    ''
+		);
+		return count($db->exec('SELECT * FROM `utilisateur` WHERE `token`="'.$token.'"')) > 0;
+	}
+
 	private static function status($code){
 		switch ($code) {
 			case 200:
