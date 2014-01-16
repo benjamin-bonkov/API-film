@@ -10,7 +10,7 @@ $f3->config('api/configs/config.ini');
 $f3->config('api/configs/routes.ini');
 
 if(isset(F3::get('GET')['token']) && Api::verifToken(F3::get('GET')['token'])){
-	unset(F3::get('GET')['token']);
+	unset($_GET['token']);
 }else{
 	Api::response(400, array('error'=>'incorrect token'));
 	return;

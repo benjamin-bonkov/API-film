@@ -8,7 +8,7 @@ class UsersController{
 		    'mysql:host=localhost;port=3306;dbname=API-film',
 		    'root',
 		    ''
-		);
+		);unset(F3::get('GET')['token']);
 	}
 
 	// public function actionAuth(){
@@ -89,5 +89,27 @@ class UsersController{
 		$data = array('Delete user with id: ' . F3::get('PARAMS.id'));
 		$this->db->exec('DELETE FROM `utilisateur` WHERE `utilisateur`.`idUser` ='.F3::get('PARAMS.id').';');
 		Api::response(200, $data);
+	}
+
+	public function actionLike(){
+		$data = array('User : ' . F3::get('GET')['idUser'].' liked '. F3::get('GET')['idFilm']);
+		$this->db->exec('INSERT INTO `like` (`idUser`, `idFilm`) VALUES ("'. F3::get('GET')['idUser'] .'", "'. F3::get('GET')['idFilm'] .'");');
+		Api::response(200, $data);
+	}
+
+	public function actionUnlike(){
+		$data = array('User : ' . F3::get('GET')['idUser'].' unliked '. F3::get('GET')['idFilm']);
+
+		$this->db->exec('DELETE FROM `like` WHERE `idUser` ="'. F3::get('GET')['idUser'] .'"&& `idFilm` ="'.F3::get('GET')['idFilm'] .'";');
+		Api::response(200, $data);
+	}
+
+	public function actionLiked(){
+		Api::response(200, $this->db->exec('SELECT * FROM `film` as f
+		 	LEFT JOIN `like` as l 
+		 	ON f.`idFilm` = l.`idFilm`
+		 	LEFT JOIN `utilisateur` as u 
+		 	ON l.`idUser`=u.`idUser`
+		 	WHERE u.`idUser`='.F3::get('PARAMS.id').';'));
 	}
 }
