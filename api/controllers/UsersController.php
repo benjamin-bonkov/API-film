@@ -1,15 +1,6 @@
 <?php
 
-class UsersController{
-	public $db;
-
-	public function __construct(){
-		$this->db=new DB\SQL(
-		    'mysql:host=localhost;port=3306;dbname=API-film',
-		    'root',
-		    ''
-		);unset(F3::get('GET')['token']);
-	}
+class UsersController extends Controller{
 
 	// public function actionAuth(){
 	// 	$user = new \DB\SQL\Mapper($this->db, 'utilisateur');

@@ -1,15 +1,6 @@
 <?php
 
-class FilmsController{
-	public $db;
-
-	public function __construct(){
-		$this->db=new DB\SQL(
-		    'mysql:host=localhost;port=3306;dbname=API-film',
-		    'root',
-		    ''
-		);
-	}
+class FilmsController extends Controller{
 
 	public function actionFindOne(){
 		Api::response(200, $this->db->exec('SELECT * FROM `film` WHERE `idFilm`="'.F3::get('PARAMS.id').'"'));
