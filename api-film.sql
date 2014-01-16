@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 15 Janvier 2014 à 11:56
+-- Généré le: Jeu 16 Janvier 2014 à 10:27
 -- Version du serveur: 5.6.12-log
 -- Version de PHP: 5.4.12
 
@@ -93,6 +93,25 @@ INSERT INTO `genre` (`idGenre`, `genre`) VALUES
 (2, 'aventure'),
 (3, 'horreur'),
 (4, 'comédie');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `like`
+--
+
+CREATE TABLE IF NOT EXISTS `like` (
+  `idUser` int(11) NOT NULL,
+  `idFilm` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `like`
+--
+
+INSERT INTO `like` (`idUser`, `idFilm`) VALUES
+(36, 20),
+(36, 18);
 
 -- --------------------------------------------------------
 
