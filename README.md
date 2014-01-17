@@ -1,6 +1,6 @@
 # API Documention
 
-# Endpoints
+in all calls, ?token=XXXXXXXXXXXXXXXXXXXXX is necessary
 
 #FILMS
 GET /v1/films/@id
